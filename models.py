@@ -28,3 +28,16 @@ class AuthorBase(SQLModel):
 
 class Author(AuthorBase, table=True):
     author_id: int = Field(default=None, primary_key=True)
+
+
+class BookBase(SQLModel):
+    title: str
+    price: float
+    amount: int
+
+    author_id: int = Field(foreign_key="author.author_id")
+    genre_id: int = Field(foreign_key="genre.genre_id")
+
+
+class Book(BookBase, table=True):
+    book_id: int = Field(default=None, primary_key=True)
