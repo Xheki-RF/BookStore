@@ -2,6 +2,7 @@ from datetime import date
 from enum import Enum
 from pydantic import BaseModel, field_validator
 from sqlmodel import SQLModel, Field, Relationship
+from fastapi import HTTPException
 
 
 class GenreChoices(Enum):
@@ -24,6 +25,16 @@ class Genre(GenreBase, table=True):
 
 class AuthorBase(SQLModel):
     name_author: str
+
+    @field_validator("name_author")
+    def capitalize_author(cls, value):
+        if len(value.split()) == 3:
+            value = value.split()[0] + " " + "".join(value.split()[1:])
+
+        elif len(value.split()) == 1:
+            raise HTTPException(status_code=400, detail="Wrong author input. Author template: Ivanov V.V")
+
+        return value.title()
 
 
 class Author(AuthorBase, table=True):
