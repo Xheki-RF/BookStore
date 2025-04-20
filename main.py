@@ -7,6 +7,13 @@ from db import init_db, get_session
 
 app = FastAPI()
 
+@app.get("/authors")
+async def get_authors(session: Session = Depends(get_session)) -> list[Author]:
+    author_list = session.exec(select(Author)).all()
+    
+    return author_list
+
+
 @app.post("/authors")
 async def add_authors(author_data: AuthorBase, session: Session = Depends(get_session)) -> Author:
     author = Author(name_author=author_data.name_author)
