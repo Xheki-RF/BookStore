@@ -30,3 +30,13 @@ async def add_authors(author_data: AuthorBase, session: Session = Depends(get_se
     session.refresh(author)
 
     return author
+
+
+@app.delete("/authors/{author_id}")
+async def delete_author(author_id: Annotated[int, Path(title="The ID of author")], session: Session = Depends(get_session)) -> str:
+    author_to_delete = session.exec(select(Author).where(Author.author_id == author_id)).first()
+
+    session.delete(author_to_delete)
+    session.commit()
+
+    return f"Author {author_to_delete.name_author} with ID {author_id} was deleted"
