@@ -32,6 +32,21 @@ async def add_authors(author_data: AuthorBase, session: Session = Depends(get_se
     return author
 
 
+@app.post("/books")
+async def add_book(book_data: BookBase, session: Session = Depends(get_session)) -> Book:
+    book = Book(title=book_data.title, 
+                price=book_data.price, 
+                amount=book_data.amount, 
+                author_id=book_data.author_id,
+                genre_id=book_data.genre_id)
+
+    session.add(book)
+    session.commit()
+    session.refresh(book)
+
+    return book
+
+
 @app.delete("/authors/{author_id}")
 async def delete_author(author_id: Annotated[int, Path(title="The ID of author")], session: Session = Depends(get_session)) -> str:
     author_to_delete = session.exec(select(Author).where(Author.author_id == author_id)).first()
