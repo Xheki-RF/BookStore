@@ -14,6 +14,13 @@ async def get_authors(session: Session = Depends(get_session)) -> list[Author]:
     return author_list
 
 
+@app.get("/authors/{author_id}")
+async def get_author(author_id: Annotated[int, Path(title="The ID of author")], session: Session = Depends(get_session)) -> Author:
+    author = session.get(Author, author_id)
+    
+    return author
+
+
 @app.post("/authors")
 async def add_authors(author_data: AuthorBase, session: Session = Depends(get_session)) -> Author:
     author = Author(name_author=author_data.name_author)
