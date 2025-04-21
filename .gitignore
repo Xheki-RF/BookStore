@@ -1,3 +1,4 @@
 .setting
 .vscode
 api.http
+__pycache__/
