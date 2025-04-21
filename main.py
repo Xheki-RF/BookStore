@@ -32,6 +32,21 @@ async def add_authors(author_data: AuthorBase, session: Session = Depends(get_se
     return author
 
 
+@app.get("/books")
+async def get_books(f: Annotated[str, Query(max_length=15)] | None = None, 
+                    genre: int | None = None,
+                    session: Session = Depends(get_session)) -> list[Book]:
+    book_list = session.exec(select(Book)).all()
+
+    if f:
+        book_list = [b for b in book_list if f.lower() in b.title.lower()]
+
+    if genre:
+        book_list = [b for b in book_list if genre == b.genre_id]
+
+    return book_list
+
+
 @app.post("/books")
 async def add_book(book_data: BookBase, session: Session = Depends(get_session)) -> Book:
     book = Book(title=book_data.title, 
