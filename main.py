@@ -32,6 +32,13 @@ async def add_authors(author_data: AuthorBase, session: Session = Depends(get_se
     return author
 
 
+@app.get("/books/{book_id}")
+async def get_book(book_id: Annotated[int, Path(title="The ID of book")], session: Session = Depends(get_session)):
+    book = session.get(Book, book_id)
+
+    return book
+
+
 @app.get("/books")
 async def get_books(f: Annotated[str, Query(max_length=15)] | None = None, 
                     genre: int | None = None,
