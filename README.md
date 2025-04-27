@@ -44,7 +44,7 @@ If also features the following requests:
     http://127.0.0.1:8000/authors/id]() - returns a selected author by id
 
 [
-    http://127.0.0.1:8000/books]() - returns a list of books. Also features queries such as: **f** which allows to search for author by input and **genre** which allows to 		return all books with input genre
+    http://127.0.0.1:8000/books]() - returns a list of books. Also features queries such as: **f** which allows to search for author by input and **genre** which allows to return all books with input genre
 
 [
     http://127.0.0.1:8000/books/id]() - returns a selected book by id
